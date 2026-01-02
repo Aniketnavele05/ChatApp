@@ -70,3 +70,46 @@ class ConversationMember(models.Model):
 
     def __str__(self):
         return f'{self.user.username} in Conversation {self.Conversation.id}'
+    
+class Message(models.Model):
+    MESSAGE_TYPE_CHOICES = (
+        ('text','Text'),
+        ('image','Image'),
+        ('file','File'),
+    )
+
+    Conversation = models.ForeignKey(
+        Conversation,
+        on_delete=models.CASCADE,
+        related_name='message'
+    )
+
+    sender = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        related_name='sent_messages'
+    )
+
+    content = models.TextField(blank=True,null=True)
+
+    file = models.FileField(
+        upload_to='chat_files/',
+        blank=True,
+        null=True
+    )
+
+    Message_type = models.CharField(
+        max_length=50,
+        choices=MESSAGE_TYPE_CHOICES,
+        default='text'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f'Message {self.id} by {self.sender.username}'
