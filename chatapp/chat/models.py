@@ -71,7 +71,7 @@ class ConversationMember(models.Model):
     def __str__(self):
         return f'{self.user.username} in Conversation {self.Conversation.id}'
     
-class Message(models.Model):
+class Messages(models.Model):
     MESSAGE_TYPE_CHOICES = (
         ('text','Text'),
         ('image','Image'),
