@@ -43,7 +43,7 @@ class ConversationMember(models.Model):
         ('member','Member'),
     )
 
-    Conversation = models.ForeignKey(
+    conversation = models.ForeignKey(
         Conversation,
         on_delete=models.CASCADE,
         related_name='members'
@@ -61,7 +61,7 @@ class ConversationMember(models.Model):
         default='member'
     )
 
-    joined_at = models.DateTimeField(auto_now_add=False)
+    joined_at = models.DateTimeField(auto_now_add=True)
 
     is_active = models.BooleanField(default=True)
 
@@ -71,17 +71,17 @@ class ConversationMember(models.Model):
     def __str__(self):
         return f'{self.user.username} in Conversation {self.Conversation.id}'
     
-class Messages(models.Model):
+class Message(models.Model):
     MESSAGE_TYPE_CHOICES = (
         ('text','Text'),
         ('image','Image'),
         ('file','File'),
     )
 
-    Conversation = models.ForeignKey(
+    conversation = models.ForeignKey(
         Conversation,
         on_delete=models.CASCADE,
-        related_name='message'
+        related_name='messages'
     )
 
     sender = models.ForeignKey(
@@ -98,7 +98,7 @@ class Messages(models.Model):
         null=True
     )
 
-    Message_type = models.CharField(
+    message_type = models.CharField(
         max_length=50,
         choices=MESSAGE_TYPE_CHOICES,
         default='text'
