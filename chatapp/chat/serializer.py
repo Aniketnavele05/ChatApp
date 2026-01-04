@@ -29,3 +29,27 @@ class ConversationCreateSerializer(serializers.Serializer):
         
         data['members'] = members
         return data
+    
+class ConverrsationListSerializer(serializers.Serializer):
+    last_message = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Conversation
+        fields = [
+            'id',
+            'type',
+            'name',
+            'created_at',
+            'last_message',
+        ]
+
+        def get_last_message(Self,obj):
+            message = obj.messages.last()
+            if not message:
+                return None
+            
+            return {
+                'content':message.content,
+                'sender':message.sender.username,
+                'created_at':message.created_at
+            }
